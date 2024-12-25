@@ -1,1 +1,1 @@
-![semanticwebagent_illustration](semanticwebagent_illustration)
+![semanticwebagent_illustration.webp](semanticwebagent_illustration.webp)
