@@ -8,6 +8,7 @@ import {FungiHistoryService} from "./src/services/fungi-history.service.js";
 import {MycelialFungiHistoryService} from "./src/services/mycelial-fungi-history.service.js";
 import statusController from "./src/controllers/status.controller.js";
 import * as Config from "./src/configs/config.js";
+import SemanticWebService from "./src/services/semantic-web.service.js";
 
 // ============== REST API ===================
 const app = express();
@@ -18,6 +19,12 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+
+// Usage
+const resource = "http://dbpedia.org/resource/%22S%22_Bridge_II";
+const client = await SemanticWebService.semanticWebService.sendDescribeQuery(resource);
+
+/*
 app.use('/user', userController);
 app.use('/fungi', fungiController);
 app.use('/notifications', notificationsController);
@@ -37,3 +44,4 @@ fungiHistoryService.startUpdatingUserFeedback();
 
 const mycelialHistoryService = MycelialFungiHistoryService.mycelialFungiHistoryService;
 mycelialHistoryService.startAggregatingMycelialData();
+*/

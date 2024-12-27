@@ -1,57 +1,43 @@
-// Define a class for interacting with the semantic web using SPARQL
+import * as Config from "../configs/config.js";
+
 class SemanticWebService {
-    constructor(endpoint) {
-        this.endpoint = endpoint;
-    }
+    static semanticWebService = new SemanticWebService();
 
-    // Function to send a SPARQL query and retrieve results
-    async fetchSPARQLResults(query) {
-        const url = `${this.endpoint}?query=${encodeURIComponent(query)}`;
+    async sendDescribeQuery(resource) {
+        // Construct the SPARQL query
+        const query = `DESCRIBE <${resource}>`;
 
+        // Configure the POST request
         const headers = {
-            "Accept": "application/sparql-results+json"
+            "Content-Type": "application/x-www-form-urlencoded",
+            Accept: "application/rdf+xml", // Choose your preferred format
         };
 
+        const body = new URLSearchParams({
+            query: query,
+            format: "application/rdf+xml", // or JSON, Turtle, etc.
+        });
+
         try {
-            const response = await fetch(url, { headers });
+            // Send the request using fetch
+            const response = await fetch(Config.SPARQL_ENDPOINT, {
+                method: "POST",
+                headers: headers,
+                body: body.toString(),
+            });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+            // Check for a successful response
+            if (response.ok) {
+                const result = await response.text();
+                console.log("Query Result:");
+                console.log(result); // Log the RDF/XML or response format
+            } else {
+                console.error(`Error: ${response.status} - ${response.statusText}`);
             }
-
-            const data = await response.json();
-            return data.results.bindings;
         } catch (error) {
-            console.error("Error fetching SPARQL results:", error);
-            return [];
+            console.error("Error while sending query:", error);
         }
     }
 }
 
-// Define the SPARQL query
-const query = `
-  SELECT ?label
-  WHERE {
-    dbr:JavaScript rdfs:label ?label .
-    FILTER (lang(?label) = "en")
-  }
-  LIMIT 10
-`;
-
-// Process and display the results
-async function main() {
-    const service = new SemanticWebService("https://dbpedia.org/sparql");
-    const results = await service.fetchSPARQLResults(query);
-
-    if (results.length > 0) {
-        console.log("SPARQL Query Results:");
-        results.forEach((result, index) => {
-            console.log(`${index + 1}: ${result.label.value}`);
-        });
-    } else {
-        console.log("No results found.");
-    }
-}
-
-// Run the script
-main();
+export default SemanticWebService;
