@@ -17,6 +17,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "html-entities": "^2.5.2",
+    "jsdom": "^25.0.1",
     "masto": "^6.10.1",
     "mocha": "^11.0.1",
     "node-cron": "^3.0.3",
