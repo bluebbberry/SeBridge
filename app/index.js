@@ -19,19 +19,6 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-
-// Usage
-const resource = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
-    "PREFIX dbp: <http://dbpedia.org/property/>\n" +
-    "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
-    "\n" +
-    "SELECT ?birthDate\n" +
-    "WHERE {\n" +
-    "    dbr:Albert_Einstein dbo:birthDate ?birthDate .\n" +
-    "}\n" +
-    "LIMIT 1";
-await SparqlService.sparqlService.sendQuery(resource);
-
 /*
 app.use('/user', userController);
 app.use('/fungi', fungiController);

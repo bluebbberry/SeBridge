@@ -1,6 +1,7 @@
 import * as cron from "node-cron";
 import { cronToHumanReadable, send, sendReply } from "./post.util.service.js";
 import { getMentionsNotifications } from "./notifications.service.js";
+import SparqlService from "./sparql.service.js";
 
 export class SemantiFedService {
     static semantiFedService = new SemantiFedService();
@@ -25,9 +26,18 @@ export class SemantiFedService {
 
     async checkForMentionsAndSendAnswer() {
         // check for mentions to account
+        const query = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
+            "PREFIX dbp: <http://dbpedia.org/property/>\n" +
+            "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
+            "\n" +
+            "SELECT ?birthDate\n" +
+            "WHERE {\n" +
+            "    dbr:Albert_Einstein dbo:birthDate ?birthDate .\n" +
+            "}\n" +
+            "LIMIT 1";
         const mentions = await getMentionsNotifications();
         for (const mention of mentions) {
-            const answer = "Hello test";
+            const answer = await SparqlService.sparqlService.getQueryResponse(query);
             await sendReply(answer, mention.status);
         }
 
