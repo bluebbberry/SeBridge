@@ -21,8 +21,16 @@ app.use(cors({
 
 
 // Usage
-const resource = "http://dbpedia.org/resource/%22S%22_Bridge_II";
-const client = await SemanticWebService.semanticWebService.sendDescribeQuery(resource);
+const resource = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
+    "PREFIX dbp: <http://dbpedia.org/property/>\n" +
+    "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
+    "\n" +
+    "SELECT ?birthDate\n" +
+    "WHERE {\n" +
+    "    dbr:Albert_Einstein dbo:birthDate ?birthDate .\n" +
+    "}\n" +
+    "LIMIT 1";
+await SemanticWebService.semanticWebService.sendQuery(resource);
 
 /*
 app.use('/user', userController);

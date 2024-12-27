@@ -3,10 +3,12 @@ import * as Config from "../configs/config.js";
 class SemanticWebService {
     static semanticWebService = new SemanticWebService();
 
-    async sendDescribeQuery(resource) {
-        // Construct the SPARQL query
+    sendDescribeQuery(resource) {
         const query = `DESCRIBE <${resource}>`;
+        this.sendQuery(query);
+    }
 
+    async sendQuery(query) {
         // Configure the POST request
         const headers = {
             "Content-Type": "application/x-www-form-urlencoded",
