@@ -1,14 +1,14 @@
 import * as Config from "../configs/config.js";
 
-class SemanticWebService {
-    static semanticWebService = new SemanticWebService();
+class SparqlService {
+    static sparqlService = new SparqlService();
 
     sendDescribeQuery(resource) {
         const query = `DESCRIBE <${resource}>`;
-        this.sendQuery(query);
+        this.getQueryResponse(query);
     }
 
-    async sendQuery(query) {
+    async getQueryResponse(query) {
         // Configure the POST request
         const headers = {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -33,13 +33,16 @@ class SemanticWebService {
                 const result = await response.text();
                 console.log("Query Result:");
                 console.log(result); // Log the RDF/XML or response format
+                return result;
             } else {
                 console.error(`Error: ${response.status} - ${response.statusText}`);
+                return null;
             }
         } catch (error) {
             console.error("Error while sending query:", error);
+            return null;
         }
     }
 }
 
-export default SemanticWebService;
+export default SparqlService;
