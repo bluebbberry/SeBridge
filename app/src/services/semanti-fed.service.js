@@ -40,7 +40,12 @@ export class SemantiFedService {
         const mentions = await getMentionsNotifications();
         for (const mention of mentions) {
             const plainText = this.removeMentions(this.extractPostContent(mention.status.content));
-            const answer = await SparqlService.sparqlService.getQueryResponse(plainText);
+            let answer;
+            if (!plainText.includes("INSERT")) {
+                answer = await SparqlService.sparqlService.postQuery(plainText);
+            } else {
+                answer = await SparqlService.sparqlService.postUpdate(plainText);
+            }
             await sendReply(answer, mention.status);
         }
 
