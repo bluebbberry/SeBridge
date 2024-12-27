@@ -9,6 +9,7 @@ class SparqlService {
     }
 
     async getQueryResponse(query) {
+        console.log(query);
         // Configure the POST request
         const headers = {
             "Content-Type": "application/x-www-form-urlencoded",

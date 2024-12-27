@@ -9,6 +9,11 @@ async function send(message) {
 }
 
 async function sendReply(message, status) {
+    if (!message) {
+        console.error("Message is blank");
+        message = "invalid sparql query";
+    }
+
     const s = await getMasto().v1.statuses.create({
         status: message,
         inReplyToId: status.id,

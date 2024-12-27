@@ -2,6 +2,8 @@ import * as cron from "node-cron";
 import { cronToHumanReadable, send, sendReply } from "./post.util.service.js";
 import { getMentionsNotifications } from "./notifications.service.js";
 import SparqlService from "./sparql.service.js";
+import {decode} from "html-entities";
+import {JSDOM} from "jsdom";
 
 export class SemantiFedService {
     static semantiFedService = new SemantiFedService();
@@ -37,7 +39,8 @@ export class SemantiFedService {
             "LIMIT 1";
         const mentions = await getMentionsNotifications();
         for (const mention of mentions) {
-            const answer = await SparqlService.sparqlService.getQueryResponse(query);
+            const plainText = this.removeMentions(this.extractPostContent(mention.status.content));
+            const answer = await SparqlService.sparqlService.getQueryResponse(plainText);
             await sendReply(answer, mention.status);
         }
 
@@ -49,5 +52,30 @@ export class SemantiFedService {
                 await sendReply(answer, status);
             }
         }*/
+    }
+
+    extractPostContent(postHtml) {
+        // Step 1: Parse the HTML string into a DOM object using DOMParser
+        const dom = new JSDOM(postHtml);
+        const doc = dom.window.document;
+
+        // Step 2: Extract the raw text content of the post (without HTML tags)
+        let content = doc.body.textContent || doc.body.innerText;
+
+        // Step 3: Find all mentions (elements with class "mention")
+        const mentions = doc.querySelectorAll('.mention');
+
+        // Step 4: Replace mentions in the content with '@username'
+        mentions.forEach(mention => {
+            const username = mention.textContent || mention.innerText;
+            content = content.replace(mention.outerHTML, '');
+        });
+
+        return content.trim(); // Return the sanitized content
+    }
+
+    removeMentions(post) {
+        // Use a regular expression to remove mentions (e.g., @echo97)
+        return post.replace(/@\w+/g, '').trim();
     }
 }
