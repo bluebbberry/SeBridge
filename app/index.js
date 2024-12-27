@@ -8,7 +8,8 @@ import {FungiHistoryService} from "./src/services/fungi-history.service.js";
 import {MycelialFungiHistoryService} from "./src/services/mycelial-fungi-history.service.js";
 import statusController from "./src/controllers/status.controller.js";
 import * as Config from "./src/configs/config.js";
-import SemanticWebService from "./src/services/semantic-web.service.js";
+import SparqlService from "./src/services/sparql.service.js";
+import {SemantiFedService} from "./src/services/semanti-fed.service.js";
 
 // ============== REST API ===================
 const app = express();
@@ -30,7 +31,7 @@ const resource = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
     "    dbr:Albert_Einstein dbo:birthDate ?birthDate .\n" +
     "}\n" +
     "LIMIT 1";
-await SemanticWebService.semanticWebService.sendQuery(resource);
+await SparqlService.sparqlService.sendQuery(resource);
 
 /*
 app.use('/user', userController);
@@ -42,11 +43,11 @@ const PORT = 3000;
 
 app.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
-});
+});*/
 
-const fungiService = FungiService.fungiService;
-fungiService.startFungiLifecycle(Config.USER_ANSWERING_SCHEDULE);
+SemantiFedService.semantiFedService.startLifecycle(Config.USER_ANSWERING_SCHEDULE);
 
+/*
 const fungiHistoryService = FungiHistoryService.fungiHistoryService;
 fungiHistoryService.startUpdatingUserFeedback();
 

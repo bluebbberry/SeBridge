@@ -1,7 +1,7 @@
 import * as Config from "../configs/config.js";
 
-class SemanticWebService {
-    static semanticWebService = new SemanticWebService();
+class SparqlService {
+    static sparqlService = new SparqlService();
 
     sendDescribeQuery(resource) {
         const query = `DESCRIBE <${resource}>`;
@@ -42,4 +42,4 @@ class SemanticWebService {
     }
 }
 
-export default SemanticWebService;
+export default SparqlService;
