@@ -14,6 +14,11 @@ async function sendReply(message, status) {
         message = "invalid sparql query";
     }
 
+    if (message.length > 500) {
+        console.error("Mastodon-status-size limit of 500 exceeded. Cut off rest.");
+        message = message.substring(0, 496)  + "...";
+    }
+
     const s = await getMasto().v1.statuses.create({
         status: message,
         inReplyToId: status.id,
