@@ -1,12 +1,11 @@
 import * as cron from "node-cron";
-import { cronToHumanReadable, send, sendReply } from "./post.util.service.js";
+import { cronToHumanReadable, sendReply } from "./post.util.service.js";
 import { getMentionsNotifications } from "./notifications.service.js";
 import SparqlService from "./sparql.service.js";
-import {decode} from "html-entities";
 import {JSDOM} from "jsdom";
 
-export class SemantiFedService {
-    static semantiFedService = new SemantiFedService();
+export class SemanticWebBridgeService {
+    static semanticWebBridgeService = new SemanticWebBridgeService();
 
     constructor(cronTemp = cron) {
         this.cron = cronTemp;
