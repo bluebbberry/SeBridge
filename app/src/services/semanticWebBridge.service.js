@@ -36,7 +36,8 @@ export class SemanticWebBridgeService {
             } else {
                 answer = await SparqlService.sparqlService.postUpdate(plainText);
             }
-            await sendReply(answer, mention.status);
+            const accountName = mention.status.account.acct;
+            await sendReply("@" + accountName + " " + answer, mention.status);
             await dismissNotification(mention.id);
         }
 
