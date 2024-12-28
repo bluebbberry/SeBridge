@@ -10,6 +10,7 @@ import sparqlController from "./src/controllers/sparql.controller.js";
 // ============== REST API ===================
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors({
     origin: 'http://localhost:4200',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -27,4 +28,4 @@ app.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
 });
 
-SemanticWebBridgeService.semanticWebBridgeService.startLifecycle(Config.USER_ANSWERING_SCHEDULE);
+// SemanticWebBridgeService.semanticWebBridgeService.startLifecycle(Config.USER_ANSWERING_SCHEDULE);
