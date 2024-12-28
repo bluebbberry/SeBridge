@@ -13,17 +13,17 @@ class SparqlService {
         // Configure the POST request
         const headers = {
             "Content-Type": "application/x-www-form-urlencoded",
-            Accept: "application/trig", // Choose your preferred format
+            Accept: Config.SPARQL_HEADER_ACCEPT, // Choose your preferred format
         };
 
         const body = new URLSearchParams({
             query: query,
-            format: "json", // or JSON, Turtle, etc.
+            format: Config.SPARQL_BODY_FORMAT, // or JSON, Turtle, etc.
         });
 
         try {
             // Send the request using fetch
-            const response = await fetch(Config.SPARQL_ENDPOINT + "/query", {
+            const response = await fetch(Config.SPARQL_ENDPOINT + Config.SPARQL_QUERY_SUFFIX, {
                 method: "POST",
                 headers: headers,
                 body: body.toString(),
