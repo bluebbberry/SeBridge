@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-if (!process.env.URL || !process.env.MASTODON_API_KEY || !process.env.ACCOUNT_NAME || !process.env.MYCELIAL_HASHTAG) {
+if (!process.env.URL || !process.env.MASTODON_API_KEY || !process.env.ACCOUNT_NAME) {
     console.error('Missing program arguments (pass through .env file: URL, MASTODON_API_KEY, ACCOUNT_NAME, MYCELIAL_HASHTAG)!');
     process.exit(1);
 }
@@ -8,24 +8,14 @@ if (!process.env.URL || !process.env.MASTODON_API_KEY || !process.env.ACCOUNT_NA
 const URL = process.env.URL;
 const MASTODON_API_KEY = process.env.MASTODON_API_KEY;
 const ACCOUNT_NAME = process.env.ACCOUNT_NAME;
-const MYCELIAL_HASHTAG = process.env.MYCELIAL_HASHTAG;
-const NUTRITIOUS_HASHTAG = process.env.NUTRITIOUS_HASHTAG;
 const SPARQL_ENDPOINT = process.env.SPARQL_ENDPOINT;
 
-const MYCELIAL_FETCH_SCHEDULE = process.env.MYCELIAL_FETCH_SCHEDULE;
 const USER_ANSWERING_SCHEDULE = process.env.USER_ANSWERING_SCHEDULE;
-const LIFECYCLE_TRIGGER_SCHEDULE = process.env.LIFECYCLE_TRIGGER_SCHEDULE;
-const FETCH_USER_FEEDBACK_SCHEDULE = process.env.FETCH_USER_FEEDBACK_SCHEDULE;
 
 export {
     URL,
     ACCOUNT_NAME,
     MASTODON_API_KEY,
-    MYCELIAL_HASHTAG,
-    MYCELIAL_FETCH_SCHEDULE,
     USER_ANSWERING_SCHEDULE,
-    LIFECYCLE_TRIGGER_SCHEDULE,
-    FETCH_USER_FEEDBACK_SCHEDULE,
-    NUTRITIOUS_HASHTAG,
     SPARQL_ENDPOINT
 };

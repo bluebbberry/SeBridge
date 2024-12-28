@@ -19,7 +19,7 @@ export class SemanticWebBridgeService {
         this.checkForMentionsAndSendAnswer();
         this.cron.schedule(answerSchedule, () => {
             // 2. Answer Questions by users
-            console.log("\n=== === === LIFECYCLE PHASE 2 - ANSWERING QUESTIONS BY USERS === === ===");
+            console.log("\n=== === === START ANSWERING QUESTIONS BY USERS === === ===");
             this.checkForMentionsAndSendAnswer();
         });
         console.log("Scheduled fungi answering " + cronToHumanReadable(answerSchedule));
@@ -27,15 +27,6 @@ export class SemanticWebBridgeService {
 
     async checkForMentionsAndSendAnswer() {
         // check for mentions to account
-        const query = "PREFIX dbo: <http://dbpedia.org/ontology/>\n" +
-            "PREFIX dbp: <http://dbpedia.org/property/>\n" +
-            "PREFIX dbr: <http://dbpedia.org/resource/>\n" +
-            "\n" +
-            "SELECT ?birthDate\n" +
-            "WHERE {\n" +
-            "    dbr:Albert_Einstein dbo:birthDate ?birthDate .\n" +
-            "}\n" +
-            "LIMIT 1";
         const mentions = await getMentionsNotifications();
         for (const mention of mentions) {
             const plainText = this.removeMentions(this.extractPostContent(mention.status.content));
