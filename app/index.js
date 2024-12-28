@@ -28,4 +28,4 @@ app.listen(PORT, () => {
     console.log("Server Listening on PORT:", PORT);
 });
 
-// SemanticWebBridgeService.semanticWebBridgeService.startLifecycle(Config.USER_ANSWERING_SCHEDULE);
+SemanticWebBridgeService.semanticWebBridgeService.startLifecycle(Config.USER_ANSWERING_SCHEDULE);
