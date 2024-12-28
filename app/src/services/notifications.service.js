@@ -6,3 +6,7 @@ export async function getMentionsNotifications() {
     });
     return notifications.filter((m) => m.type === "mention");
 }
+
+export async function dismissNotification(notificationId) {
+    await getMasto().v1.notifications.$select(notificationId).dismiss();
+}

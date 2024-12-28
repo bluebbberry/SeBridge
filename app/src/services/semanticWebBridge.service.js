@@ -1,6 +1,6 @@
 import * as cron from "node-cron";
 import { cronToHumanReadable, sendReply } from "./post.util.service.js";
-import { getMentionsNotifications } from "./notifications.service.js";
+import {dismissNotification, getMentionsNotifications} from "./notifications.service.js";
 import SparqlService from "./sparql.service.js";
 import {JSDOM} from "jsdom";
 
@@ -37,6 +37,7 @@ export class SemanticWebBridgeService {
                 answer = await SparqlService.sparqlService.postUpdate(plainText);
             }
             await sendReply(answer, mention.status);
+            await dismissNotification(mention.id);
         }
 
         // check for requests under hashtag
