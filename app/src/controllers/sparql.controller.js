@@ -7,15 +7,20 @@ const sparqlService = SparqlService.sparqlService;
 // post update request to RDF triple store
 router.post("/update", async (request, response) => {
     const updateQuery = request.body;
-    const botResponse = await sparqlService.postQuery(updateQuery);
+    const botResponse = await sparqlService.postUpdate(updateQuery);
     response.status(200).json({ responseBody: botResponse });
 });
 
 // post query to RDF triple store
 router.post("/query", async (request, response) => {
-    const query = request.body;
+    // support requests with Content-Type "application/x-www-form-urlencoded"
+    // Variables are stored in request.body.<variable_name>
+    const query = request.body.query;
+    console.log("Received query");
     const botResponse = await sparqlService.postQuery(query);
-    response.status(200).json({ responseBody: botResponse });
+    console.log("Bot response:");
+    console.log(botResponse);
+    response.status(200).json({ responseBody: JSON.parse(botResponse) });
 });
 
 export default router;

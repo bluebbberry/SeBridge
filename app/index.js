@@ -10,6 +10,7 @@ import sparqlController from "./src/controllers/sparql.controller.js";
 // ============== REST API ===================
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // support encoded bodies
 app.use(cors({
     origin: 'http://localhost:4200',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
