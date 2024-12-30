@@ -34,6 +34,7 @@ ACCOUNT_NAME=your-account-name
 URL=url-to-my-instance
       
 USER_ANSWERING_SCHEDULE="*/3 * * * *" #schedule to answer requests from users
+SE_HASHTAG="semanticweb"
   
 SPARQL_ENDPOINT="http://localhost:3030/my-knowledge-base"
 SPARQL_QUERY_SUFFIX="/query"
