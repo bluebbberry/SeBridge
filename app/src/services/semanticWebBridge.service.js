@@ -12,6 +12,7 @@ export class SemanticWebBridgeService {
 
     constructor(cronTemp = cron) {
         this.cron = cronTemp;
+        this.alreadySeenStatuses = {};
     }
 
     startLifecycle(answeringSchedule) {
@@ -47,15 +48,18 @@ export class SemanticWebBridgeService {
         // check for requests under hashtag
         const postStatuses = await StatusesService.statusesService.getStatusesFromTag(Config.SE_HASHTAG, 40);
         for (const status of postStatuses) {
-            const plainText = this.removeHashtags(this.extractPostContent(status.content));
-            let answer;
-            if (!plainText.includes("INSERT")) {
-                answer = await SparqlService.sparqlService.postQuery(plainText);
-            } else {
-                answer = await SparqlService.sparqlService.postUpdate(plainText);
+            if (!this.alreadySeenStatuses[status.id]) {
+                const plainText = this.removeHashtags(this.extractPostContent(status.content));
+                let answer;
+                if (!plainText.includes("INSERT")) {
+                    answer = await SparqlService.sparqlService.postQuery(plainText);
+                } else {
+                    answer = await SparqlService.sparqlService.postUpdate(plainText);
+                }
+                const accountName = status.account.acct;
+                this.alreadySeenStatuses[status.id] = true;
+                await sendReply("@" + accountName + " " + answer, status);
             }
-            const accountName = status.account.acct;
-            await sendReply("@" + accountName + " " + answer, status);
         }
     }
 
