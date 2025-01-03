@@ -21,11 +21,11 @@ export class LlmService {
 
     async sparqlAnswerToNlAnswer(sparql) {
         if (this.ollamaIsAvailable) {
-            let prompt = "With as few words as possible, turn the following SPARQL-formatted text in a natural-language description: " + sparql;
+            let prompt = "On point and exact, with as few words as possible, describe the following SPARQL-formatted text to me: " + sparql;
             let answer = await this.sendData(prompt);
-            return answer + " (Raw: " + sparql + ")";
+            return answer;
         } else {
-            return sparql;
+            return null;
         }
     }
 

@@ -24,6 +24,7 @@ async function sendReply(message, status) {
         inReplyToId: status.id,
     });
     console.log(s.url);
+    return s;
 }
 
 /**
