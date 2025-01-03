@@ -4,8 +4,8 @@ import {dismissNotification, getMentionsNotifications} from "./notifications.ser
 import SparqlService from "./sparql.service.js";
 import {JSDOM} from "jsdom";
 import {StatusesService} from "./statuses.service.js";
-import {decode} from "html-entities";
 import * as Config from "../configs/config.js";
+import {LlmService} from "./llm.service.js";
 
 export class SemanticWebBridgeService {
     static semanticWebBridgeService = new SemanticWebBridgeService();
@@ -34,14 +34,16 @@ export class SemanticWebBridgeService {
         const mentions = await getMentionsNotifications();
         for (const mention of mentions) {
             const plainText = this.removeMentions(this.extractPostContent(mention.status.content));
-            let answer;
+            let answer, answerNl;
             if (!plainText.includes("INSERT")) {
                 answer = await SparqlService.sparqlService.postQuery(plainText);
+                answerNl = await LlmService.llmService.sparqlAnswerToNlAnswer(answer);
             } else {
                 answer = await SparqlService.sparqlService.postUpdate(plainText);
+                answerNl = await LlmService.llmService.sparqlAnswerToNlAnswer(answer);
             }
             const accountName = mention.status.account.acct;
-            await sendReply("@" + accountName + " " + answer, mention.status);
+            await sendReply("@" + accountName + " " + answerNl, mention.status);
             await dismissNotification(mention.id);
         }
 
@@ -50,15 +52,17 @@ export class SemanticWebBridgeService {
         for (const status of postStatuses) {
             if (!this.alreadySeenStatuses[status.id]) {
                 const plainText = this.removeHashtags(this.extractPostContent(status.content));
-                let answer;
+                let answer, answerNl;
                 if (!plainText.includes("INSERT")) {
                     answer = await SparqlService.sparqlService.postQuery(plainText);
+                    answerNl = await LlmService.llmService.sparqlAnswerToNlAnswer(answer);
                 } else {
                     answer = await SparqlService.sparqlService.postUpdate(plainText);
+                    answerNl = await LlmService.llmService.sparqlAnswerToNlAnswer(answer);
                 }
                 const accountName = status.account.acct;
                 this.alreadySeenStatuses[status.id] = true;
-                await sendReply("@" + accountName + " " + answer, status);
+                await sendReply("@" + accountName + " " + answerNl, status);
             }
         }
     }

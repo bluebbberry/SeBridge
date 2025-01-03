@@ -57,3 +57,17 @@ Depending on the triple store, the .env-setup might be different, for example:
 - SPARQL_QUERY_ACCEPT_HEADER="application/trig"
 
 That's it! Your server should be up and running!
+
+## LLM
+
+Setup virtual environment:
+
+``bash
+python -m venv venv
+``
+
+Install requirements:
+
+``bash
+python -m pip install -r requirements.txt
+``
