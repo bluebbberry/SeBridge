@@ -71,3 +71,5 @@ Install requirements:
 ``bash
 python -m pip install -r requirements.txt
 ``
+
+Build with Meta Lama 3 and ollama.
