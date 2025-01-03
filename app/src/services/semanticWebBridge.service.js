@@ -43,7 +43,7 @@ export class SemanticWebBridgeService {
                 answerNl = await LlmService.llmService.sparqlAnswerToNlAnswer(answer);
             }
             const accountName = mention.status.account.acct;
-            await sendReply("@" + accountName + " " + answerNl, mention.status);
+            await this.sendReply(accountName, answer, answerNl, mention.status);
             await dismissNotification(mention.id);
         }
 
@@ -62,8 +62,17 @@ export class SemanticWebBridgeService {
                 }
                 const accountName = status.account.acct;
                 this.alreadySeenStatuses[status.id] = true;
-                await sendReply("@" + accountName + " " + answerNl, status);
+                await this.sendReply(accountName, answer, answerNl, status);
             }
+        }
+    }
+
+    async sendReply(accountName, answer, answerNl, status) {
+        if (answerNl) {
+            const reply = await sendReply("@" + accountName + " " + answerNl, status);
+            await sendReply(answer, reply);
+        } else {
+            await sendReply("@" + accountName + " " + answer, status);
         }
     }
 
