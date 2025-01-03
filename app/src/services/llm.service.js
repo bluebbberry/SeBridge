@@ -21,9 +21,9 @@ export class LlmService {
 
     async sparqlAnswerToNlAnswer(sparql) {
         if (this.ollamaIsAvailable) {
-            let prompt = "Turn the following SPARQL query-answer in a natural-language answer (also include links to the referenced linked data using data-uris): " + sparql;
-            let answer = this.sendData(prompt);
-            return answer;
+            let prompt = "With as few words as possible, turn the following SPARQL-formatted text in a natural-language description: " + sparql;
+            let answer = await this.sendData(prompt);
+            return answer + " (Raw: " + sparql + ")";
         } else {
             return sparql;
         }
